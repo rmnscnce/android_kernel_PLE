@@ -1,0 +1,11 @@
+--- arch/arm/boot/dts/moxart-uc7112lx.dts
++++ arch/arm/boot/dts/moxart-uc7112lx.dts
+@@ -6,7 +6,7 @@
+  */
+ 
+ /dts-v1/;
+-/include/ "moxart.dtsi"
++#include "moxart.dtsi"
+ 
+ / {
+ 	model = "MOXA UC-7112-LX";

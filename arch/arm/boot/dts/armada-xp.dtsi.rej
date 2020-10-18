@@ -1,0 +1,26 @@
+--- arch/arm/boot/dts/armada-xp.dtsi
++++ arch/arm/boot/dts/armada-xp.dtsi
+@@ -125,7 +125,7 @@
+ 			};
+ 
+ 			eth2: ethernet@30000 {
+-				compatible = "marvell,armada-370-neta";
++				compatible = "marvell,armada-xp-neta";
+ 				reg = <0x30000 0x4000>;
+ 				interrupts = <12>;
+ 				clocks = <&gateclk 2>;
+@@ -168,6 +168,14 @@
+ 				};
+ 			};
+ 
++			ethernet@70000 {
++				compatible = "marvell,armada-xp-neta";
++			};
++
++			ethernet@74000 {
++				compatible = "marvell,armada-xp-neta";
++			};
++
+ 			xor@f0900 {
+ 				compatible = "marvell,orion-xor";
+ 				reg = <0xF0900 0x100

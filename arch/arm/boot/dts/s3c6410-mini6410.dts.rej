@@ -1,0 +1,13 @@
+--- arch/arm/boot/dts/s3c6410-mini6410.dts
++++ arch/arm/boot/dts/s3c6410-mini6410.dts
+@@ -198,10 +198,6 @@
+ 	status = "okay";
+ };
+ 
+-&pwm {
+-	status = "okay";
+-};
+-
+ &pinctrl0 {
+ 	gpio_leds: gpio-leds {
+ 		samsung,pins = "gpk-4", "gpk-5", "gpk-6", "gpk-7";

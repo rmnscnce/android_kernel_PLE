@@ -1,0 +1,8 @@
+--- Documentation/ABI/testing/configfs-usb-gadget-loopback
++++ Documentation/ABI/testing/configfs-usb-gadget-loopback
+@@ -5,4 +5,4 @@ Description:
+ 		The attributes:
+ 
+ 		qlen		- depth of loopback queue
+-		bulk_buflen	- buffer length
++		buflen		- buffer length

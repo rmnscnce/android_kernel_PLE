@@ -1,0 +1,10 @@
+--- arch/arm/boot/dts/sun4i-a10-hackberry.dts
++++ arch/arm/boot/dts/sun4i-a10-hackberry.dts
+@@ -120,6 +120,7 @@
+ 		regulator-name = "emac-3v3";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
++		startup-delay-us = <20000>;
+ 		enable-active-high;
+ 		gpio = <&pio 7 19 0>;
+ 	};

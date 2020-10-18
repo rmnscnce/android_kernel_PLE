@@ -1,0 +1,35 @@
+--- arch/arm64/kernel/smp.c
++++ arch/arm64/kernel/smp.c
+@@ -37,6 +37,7 @@
+ #include <linux/of.h>
+ #include <linux/irq_work.h>
+ 
++#include <asm/alternative.h>
+ #include <asm/atomic.h>
+ #include <asm/cacheflush.h>
+ #include <asm/cpu.h>
+@@ -129,7 +130,7 @@ static void smp_store_cpu_info(unsigned int cpuid)
+  * This is the secondary CPU boot entry.  We're using this CPUs
+  * idle thread stack, but a set of temporary page tables.
+  */
+-asmlinkage void secondary_start_kernel(void)
++asmlinkage notrace void secondary_start_kernel(void)
+ {
+ 	struct mm_struct *mm = &init_mm;
+ 	unsigned int cpu = smp_processor_id();
+@@ -178,7 +179,6 @@ asmlinkage void secondary_start_kernel(void)
+ 	set_cpu_online(cpu, true);
+ 	complete(&cpu_running);
+ 
+-	local_dbg_enable();
+ 	local_irq_enable();
+ 	local_async_enable();
+ 
+@@ -309,6 +309,7 @@ void cpu_die(void)
+ void __init smp_cpus_done(unsigned int max_cpus)
+ {
+ 	pr_info("SMP: Total of %d processors activated.\n", num_online_cpus());
++	apply_alternatives();
+ }
+ 
+ void __init smp_prepare_boot_cpu(void)

@@ -1,0 +1,7 @@
+--- arch/ia64/include/asm/Kbuild
++++ arch/ia64/include/asm/Kbuild
+@@ -9,3 +9,4 @@ generic-y += preempt.h
+ generic-y += scatterlist.h
+ generic-y += trace_clock.h
+ generic-y += vtime.h
++generic-y += word-at-a-time.h

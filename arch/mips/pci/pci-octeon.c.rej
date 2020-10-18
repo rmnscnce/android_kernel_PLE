@@ -1,0 +1,55 @@
+--- arch/mips/pci/pci-octeon.c
++++ arch/mips/pci/pci-octeon.c
+@@ -214,6 +214,8 @@ const char *octeon_get_pci_interrupts(void)
+ 		return "AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+ 	case CVMX_BOARD_TYPE_BBGW_REF:
+ 		return "AABCD";
++	case CVMX_BOARD_TYPE_CUST_DSR1000N:
++		return "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC";
+ 	case CVMX_BOARD_TYPE_THUNDER:
+ 	case CVMX_BOARD_TYPE_EBH3000:
+ 	default:
+@@ -271,9 +273,6 @@ static int octeon_read_config(struct pci_bus *bus, unsigned int devfn,
+ 	pci_addr.s.func = devfn & 0x7;
+ 	pci_addr.s.reg = reg;
+ 
+-#if PCI_CONFIG_SPACE_DELAY
+-	udelay(PCI_CONFIG_SPACE_DELAY);
+-#endif
+ 	switch (size) {
+ 	case 4:
+ 		*val = le32_to_cpu(cvmx_read64_uint32(pci_addr.u64));
+@@ -308,9 +307,6 @@ static int octeon_write_config(struct pci_bus *bus, unsigned int devfn,
+ 	pci_addr.s.func = devfn & 0x7;
+ 	pci_addr.s.reg = reg;
+ 
+-#if PCI_CONFIG_SPACE_DELAY
+-	udelay(PCI_CONFIG_SPACE_DELAY);
+-#endif
+ 	switch (size) {
+ 	case 4:
+ 		cvmx_write64_uint32(pci_addr.u64, cpu_to_le32(val));
+@@ -575,6 +571,11 @@ static int __init octeon_pci_setup(void)
+ 	if (octeon_has_feature(OCTEON_FEATURE_PCIE))
+ 		return 0;
+ 
++	if (!octeon_is_pci_host()) {
++		pr_notice("Not in host mode, PCI Controller not initialized\n");
++		return 0;
++	}
++
+ 	/* Point pcibios_map_irq() to the PCI version of it */
+ 	octeon_pcibios_map_irq = octeon_pci_pcibios_map_irq;
+ 
+@@ -586,11 +587,6 @@ static int __init octeon_pci_setup(void)
+ 	else
+ 		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
+ 
+-	if (!octeon_is_pci_host()) {
+-		pr_notice("Not in host mode, PCI Controller not initialized\n");
+-		return 0;
+-	}
+-
+ 	/* PCI I/O and PCI MEM values */
+ 	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
+ 	ioport_resource.start = 0;

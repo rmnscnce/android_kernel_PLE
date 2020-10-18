@@ -1,0 +1,8 @@
+--- arch/avr32/include/asm/Kbuild
++++ arch/avr32/include/asm/Kbuild
+@@ -21,4 +21,5 @@ generic-y += sections.h
+ generic-y += topology.h
+ generic-y += trace_clock.h
+ generic-y += vga.h
++generic-y += word-at-a-time.h
+ generic-y += xor.h

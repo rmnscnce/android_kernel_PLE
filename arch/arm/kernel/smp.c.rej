@@ -1,0 +1,44 @@
+--- arch/arm/kernel/smp.c
++++ arch/arm/kernel/smp.c
+@@ -387,8 +387,17 @@ asmlinkage void secondary_start_kernel(void)
+ 
+ void __init smp_cpus_done(unsigned int max_cpus)
+ {
+-	printk(KERN_INFO "SMP: Total of %d processors activated.\n",
+-	       num_online_cpus());
++	int cpu;
++	unsigned long bogosum = 0;
++
++	for_each_online_cpu(cpu)
++		bogosum += per_cpu(cpu_data, cpu).loops_per_jiffy;
++
++	printk(KERN_INFO "SMP: Total of %d processors activated "
++	       "(%lu.%02lu BogoMIPS).\n",
++	       num_online_cpus(),
++	       bogosum / (500000/HZ),
++	       (bogosum / (5000/HZ)) % 100);
+ 
+ 	hyp_mode_check();
+ }
+@@ -649,6 +658,21 @@ void smp_send_stop(void)
+ 		pr_warn("SMP: failed to stop secondary CPUs\n");
+ }
+ 
++/* In case panic() and panic() called at the same time on CPU1 and CPU2,
++ * and CPU 1 calls panic_smp_self_stop() before crash_smp_send_stop()
++ * CPU1 can't receive the ipi irqs from CPU2, CPU1 will be always online,
++ * kdump fails. So split out the panic_smp_self_stop() and add
++ * set_cpu_online(smp_processor_id(), false).
++ */
++void panic_smp_self_stop(void)
++{
++	pr_debug("CPU %u will stop doing anything useful since another CPU has paniced\n",
++	         smp_processor_id());
++	set_cpu_online(smp_processor_id(), false);
++	while (1)
++		cpu_relax();
++}
++
+ /*
+  * not supported here
+  */

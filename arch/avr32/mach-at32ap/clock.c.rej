@@ -1,0 +1,11 @@
+--- arch/avr32/mach-at32ap/clock.c
++++ arch/avr32/mach-at32ap/clock.c
+@@ -192,7 +210,7 @@ EXPORT_SYMBOL(clk_set_parent);
+ 
+ struct clk *clk_get_parent(struct clk *clk)
+ {
+-	return clk->parent;
++	return !clk ? NULL : clk->parent;
+ }
+ EXPORT_SYMBOL(clk_get_parent);
+ 

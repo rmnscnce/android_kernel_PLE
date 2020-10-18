@@ -1,0 +1,11 @@
+--- arch/arm/boot/dts/sama5d3xmb.dtsi
++++ arch/arm/boot/dts/sama5d3xmb.dtsi
+@@ -176,7 +176,7 @@
+ 			"Headphone Jack", "HPOUTR",
+ 			"IN2L", "Line In Jack",
+ 			"IN2R", "Line In Jack",
+-			"MICBIAS", "IN1L",
++			"Mic", "MICBIAS",
+ 			"IN1L", "Mic";
+ 
+ 		atmel,ssc-controller = <&ssc0>;

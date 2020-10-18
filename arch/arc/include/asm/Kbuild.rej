@@ -1,0 +1,8 @@
+--- arch/arc/include/asm/Kbuild
++++ arch/arc/include/asm/Kbuild
+@@ -50,4 +50,5 @@ generic-y += types.h
+ generic-y += ucontext.h
+ generic-y += user.h
+ generic-y += vga.h
++generic-y += word-at-a-time.h
+ generic-y += xor.h

@@ -1,0 +1,11 @@
+--- arch/arm/boot/dts/at91sam9263.dtsi
++++ arch/arm/boot/dts/at91sam9263.dtsi
+@@ -913,6 +913,8 @@
+ 			interrupts = <26 IRQ_TYPE_LEVEL_HIGH 3>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pinctrl_fb>;
++			clocks = <&lcd_clk>, <&lcd_clk>;
++			clock-names = "lcdc_clk", "hclk";
+ 			status = "disabled";
+ 		};
+ 

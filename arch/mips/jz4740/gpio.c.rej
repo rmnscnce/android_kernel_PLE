@@ -1,0 +1,10 @@
+--- arch/mips/jz4740/gpio.c
++++ arch/mips/jz4740/gpio.c
+@@ -27,6 +27,7 @@
+ #include <linux/seq_file.h>
+ 
+ #include <asm/mach-jz4740/base.h>
++#include <asm/mach-jz4740/gpio.h>
+ 
+ #include "irq.h"
+ 

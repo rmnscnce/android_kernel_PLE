@@ -1,0 +1,18 @@
+--- arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi
++++ arch/arm/boot/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -31,6 +31,7 @@
+ 			regulator-min-microvolt = <5000000>;
+ 			regulator-max-microvolt = <5000000>;
+ 			gpio = <&gpio4 15 0>;
++			enable-active-high;
+ 		};
+ 
+ 		reg_usb_h1_vbus: regulator@1 {
+@@ -40,6 +41,7 @@
+ 			regulator-min-microvolt = <5000000>;
+ 			regulator-max-microvolt = <5000000>;
+ 			gpio = <&gpio1 0 0>;
++			enable-active-high;
+ 		};
+ 	};
+ 

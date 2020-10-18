@@ -1754,9 +1754,10 @@ static int ks8851_probe(struct spi_device *spi)
 err_netdev:
 	free_irq(ndev->irq, ks);
 
-err_irq:
+/* Unused label
+ * err_irq:
 	if (gpio_is_valid(gpio))
-		gpio_set_value(gpio, 0);
+		gpio_set_value(gpio, 0); */
 err_id:
 err_gpio:
 	free_netdev(ndev);

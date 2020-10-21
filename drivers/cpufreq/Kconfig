@@ -157,12 +157,6 @@ config CPU_FREQ_DEFAULT_GOV_LIONFISH
 	bool "lionfish"
 	select CPU_FREQ_GOV_LIONFISH
 
-config CPU_FREQ_DEFAULT_GOV_CONSERVATIVEX
-	bool "conservativex"
-	select CPU_FREQ_GOV_CONSERVATIVEX
-	help
-	  Use the CPUFreq governor 'conservativex' as default.
-
 config CPU_FREQ_DEFAULT_GOV_BIOSHOCK
 	bool "BioShock"
 	select CPU_FREQ_GOV_BIOSHOCK
@@ -328,12 +322,6 @@ config CPU_FREQ_GOV_LIONFISH
 	  module will be called cpufreq_lionfish.
 
 	  If in doubt, say N.
-	  
-config CPU_FREQ_GOV_CONSERVATIVEX
-	tristate "'conservativex' cpufreq governor"
-	depends on CPU_FREQ
-	help
-	  'conservativex' - less aggressive version of conservative
 
 comment "CPU frequency scaling drivers"
 

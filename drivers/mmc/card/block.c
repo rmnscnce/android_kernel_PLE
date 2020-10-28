@@ -56,6 +56,12 @@
 #include "../../../drivers/fih/fih_emmc.h"
 /*add for emmcinfo } */
 
+/*add for emmcinfo { */
+#include <linux/string.h>
+#include "../../../drivers/fih/fih_emmc.h"
+/*add for emmcinfo } */
+
+
 MODULE_ALIAS("mmc:block");
 #ifdef MODULE_PARAM_PREFIX
 #undef MODULE_PARAM_PREFIX
@@ -1330,6 +1336,8 @@ static int mmc_blk_cmd_error(struct request *req, const char *name, int error,
 		       req->rq_disk->disk_name, error, status);
 		pr_err("BBox;%s: unknown error %d sending read/write command, card status %#x\n",
 		       req->rq_disk->disk_name, error, status);
+		pr_err("BBox;%s: unknown error %d sending read/write command, card status %#x\n",
+		       req->rq_disk->disk_name, error, status);
 		return ERR_ABORT;
 	}
 }
@@ -1881,6 +1889,8 @@ static int mmc_blk_err_check(struct mmc_card *card,
 		pr_err("BBox;%s: r/w command failed, status = %#x\n",
 		       req->rq_disk->disk_name, brq->cmd.resp[0]);
 		return MMC_BLK_ABORT;
+		pr_err("BBox;%s: r/w command failed, status = %#x\n",
+		       req->rq_disk->disk_name, brq->cmd.resp[0]);
 	}
 
 	/*
@@ -1923,6 +1933,12 @@ static int mmc_blk_err_check(struct mmc_card *card,
 		       (unsigned)blk_rq_pos(req),
 		       (unsigned)blk_rq_sectors(req),
 		       brq->cmd.resp[0], brq->stop.resp[0]);
+		pr_err("BBox;%s: error %d transferring data, sector %u, nr %u, cmd response %#x, card status %#x\n",
+		       req->rq_disk->disk_name, brq->data.error,
+		       (unsigned)blk_rq_pos(req),
+		       (unsigned)blk_rq_sectors(req),
+		       brq->cmd.resp[0], brq->stop.resp[0]);
+
 
 		if (rq_data_dir(req) == READ) {
 			if (ecc_err)
@@ -4404,6 +4420,54 @@ static int mmc_blk_probe(struct mmc_card *card)
 	pr_info("%s: %s %s %s %s\n",
 		md->disk->disk_name, mmc_card_id(card), mmc_card_name(card),
 		cap_str, md->read_only ? "(ro)" : "");
+
+	if(strncmp(md->disk->disk_name, "mmcblk1", 7) == 0) {
+		printk("BBox::UPD;68::%llu::%u::%s\n", (u64)get_capacity(md->disk)*(u64)512, mmc_card_manfid(card), mmc_card_name(card));
+	}
+	/*add for emmcinfo { */
+	if (0 == strcmp("mmcblk0", md->disk->disk_name))
+	{
+		switch (card->cid.manfid) {
+			case 0x02: sprintf(buf, "Sandisk"); break;
+			case 0x11: sprintf(buf, "Toshiba"); break;
+			case 0x15: sprintf(buf, "Samsung"); break;
+			case 0x45: sprintf(buf, "Sandisk"); break;
+			case 0x70: sprintf(buf, "Kingston"); break;
+			case 0x90: sprintf(buf, "Hynix"); break;
+			case 0x13: sprintf(buf, "Micron"); break;
+			default:   sprintf(buf, "Unknown"); break;
+		}
+
+		switch (card->ext_csd.rev) {
+			case 0x00: strcat(buf, " 4.0"); break;
+			case 0x01: strcat(buf, " 4.1"); break;
+			case 0x02: strcat(buf, " 4.2"); break;
+			case 0x03: strcat(buf, " 4.3"); break;
+			case 0x04: strcat(buf, " 4.4"); break;
+			case 0x05: strcat(buf, " 4.41"); break;
+			case 0x06: strcat(buf, " 4.5"); break;
+			case 0x07: sprintf(buf, "%s 5.0", buf);  break;
+			case 0x08: sprintf(buf, "%s 5.1", buf);  break;
+			default: sprintf(buf, "%s 0x%x", buf, card->ext_csd.rev);break;
+		}
+
+		sec_count =
+		  + ((card->ext_csd.raw_sectors[3]) << 24)
+		  + ((card->ext_csd.raw_sectors[2]) << 16)
+		  + ((card->ext_csd.raw_sectors[1]) <<  8)
+		  + (card->ext_csd.raw_sectors[0]);
+
+		max_count = 1 << 21; /* 1GB */
+		while (max_count < sec_count) {
+			max_count = max_count << 1;
+		}
+		sprintf(buf, "%s %dG", buf, (max_count >> 21));
+
+		sprintf(buf, "%s 0x%x%x", buf, card->cid.fwrev, card->cid.hwrev);
+
+		fih_emmc_setup(buf);
+	}
+	/*add for emmcinfo } */
 
 	if(strncmp(md->disk->disk_name, "mmcblk1", 7) == 0) {
 		printk("BBox::UPD;68::%llu::%u::%s\n", (u64)get_capacity(md->disk)*(u64)512, mmc_card_manfid(card), mmc_card_name(card));

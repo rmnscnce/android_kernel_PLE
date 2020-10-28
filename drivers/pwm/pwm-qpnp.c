@@ -1826,7 +1826,7 @@ out:
 
 static int qpnp_lpg_get_rev_subtype(struct qpnp_pwm_chip *chip)
 {
-	int rc;
+	int rc=0;
 
 	rc = spmi_ext_register_readl(chip->spmi_dev->ctrl,
 		chip->spmi_dev->sid,

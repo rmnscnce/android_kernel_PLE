@@ -828,4 +828,9 @@ config INPUT_FIH_SENSORS_LTR557
 	tristate "LTR557 Proximity LIGHT Sensor Driver support"
 	default n
 
+config INPUT_FIH_SENSORS_LTR557
+	tristate "LTR557 Proximity LIGHT Sensor Driver support"
+	default n
+
+
 endif

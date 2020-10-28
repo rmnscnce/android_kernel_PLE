@@ -1372,11 +1372,30 @@ int msm_sensor_config(struct msm_sensor_ctrl_t *s_ctrl, void __user *argp)
 		if (s_ctrl->func_tbl->sensor_power_up) {
 			if (s_ctrl->sensordata->misc_regulator)
 				msm_sensor_misc_regulator(s_ctrl, 1);
+			//SW4-RL-Camera BBS log-00+{_20170216
+			sensorName = s_ctrl->sensordata->sensor_name;
+
+			if(s_ctrl->sensordata->actuator_name!=NULL && ((int)strlen(s_ctrl->sensordata->actuator_name)>1)){
+				actuatorName = s_ctrl->sensordata->actuator_name;
+				//pr_err("%s:%d actuatorName = %s\n", __func__, __LINE__, actuatorName);
+			}
+
+			pos = s_ctrl->sensordata->sensor_info->position;
+			//SW4-RL-Camera BBS log-00+}_20170216
+
+			//SW4-RL-Camera BBS log-00+_20170216
+			//fih_bbs_camera_msg_by_soensor_info(s_ctrl->sensor_i2c_client->cci_client->sid,
+			//    s_ctrl->sensordata->sensor_name, s_ctrl->sensordata->sensor_info->position, NULL, FIH_BBS_CAMERA_ERRORCODE_POWER_UP);
 
 			rc = s_ctrl->func_tbl->sensor_power_up(s_ctrl);
 			if (rc < 0) {
 				pr_err("%s:%d failed rc %d\n", __func__,
 					__LINE__, rc);
+				//, add BBS log
+				//fih_bbs_camera_msg_by_addr(s_ctrl->sensor_i2c_client->cci_client->sid, FIH_BBS_CAMERA_ERRORCODE_POWER_UP);
+				//SW4-RL-Camera BBS log-00+_20170216
+				fih_bbs_camera_msg_by_soensor_info(s_ctrl->sensor_i2c_client->cci_client->sid,
+				    s_ctrl->sensordata->sensor_name, s_ctrl->sensordata->sensor_info->position, NULL, FIH_BBS_CAMERA_ERRORCODE_POWER_UP);
 				break;
 			}
 			s_ctrl->sensor_state = MSM_SENSOR_POWER_UP;
@@ -1402,11 +1421,21 @@ int msm_sensor_config(struct msm_sensor_ctrl_t *s_ctrl, void __user *argp)
 		if (s_ctrl->func_tbl->sensor_power_down) {
 			if (s_ctrl->sensordata->misc_regulator)
 				msm_sensor_misc_regulator(s_ctrl, 0);
+			
+			//SW4-RL-Camera BBS log-00+{_20170216
+			sensorName = s_ctrl->sensordata->sensor_name;
+			pos = s_ctrl->sensordata->sensor_info->position;
+			//SW4-RL-Camera BBS log-00+}_20170216
 
+			//SW4-RL-Camera BBS log-00+_20170216
+			//fih_bbs_camera_msg_by_soensor_info(s_ctrl->sensor_i2c_client->cci_client->sid,
+			//	 s_ctrl->sensordata->sensor_name, s_ctrl->sensordata->sensor_info->position, NULL, FIH_BBS_CAMERA_ERRORCODE_POWER_DW);
 			rc = s_ctrl->func_tbl->sensor_power_down(s_ctrl);
 			if (rc < 0) {
 				pr_err("%s:%d failed rc %d\n", __func__,
 					__LINE__, rc);
+								fih_bbs_camera_msg_by_soensor_info(s_ctrl->sensor_i2c_client->cci_client->sid,
+				  s_ctrl->sensordata->sensor_name, s_ctrl->sensordata->sensor_info->position, NULL, FIH_BBS_CAMERA_ERRORCODE_POWER_DW);
 				break;
 			}
 			s_ctrl->sensor_state = MSM_SENSOR_POWER_DOWN;

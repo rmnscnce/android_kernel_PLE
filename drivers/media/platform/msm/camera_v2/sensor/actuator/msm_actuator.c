@@ -40,6 +40,16 @@ static struct msm_actuator msm_vcm_actuator_table;
 static struct msm_actuator msm_piezo_actuator_table;
 static struct msm_actuator msm_hvcm_actuator_table;
 static struct msm_actuator msm_bivcm_actuator_table;
+//, add BBS log
+extern void fih_bbs_camera_msg_by_addr(int, int);
+
+//SW4-RL-Camera BBS log-00+{_20170216
+extern void fih_bbs_camera_msg_by_soensor_info(int, const char *, int, const char *, int);
+extern const char *actuatorName;
+extern const char *sensorName;
+extern int pos;
+//SW4-RL-Camera BBS log-00+}_20170216
+
 
 //, add BBS log
 extern void fih_bbs_camera_msg_by_addr(int, int);

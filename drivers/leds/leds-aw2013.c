@@ -618,6 +618,20 @@ static int aw2013_led_probe(struct i2c_client *client,
 	}
 //SW-PRODUCTION-JH-Register rw fail+]
 
+//SW-PRODUCTION-JH-Register rw fail+[
+	ret = aw2013_power_init(led_array, true);
+	if (ret) {
+		dev_err(&client->dev, "power init failed");
+		goto fail_parsed_node;
+	}
+	/* enable regulators if they are disabled */
+	if (aw2013_power_on(led_array, true)) {
+		dev_err(&client->dev, "power on failed");
+		goto fail_parsed_node;
+	}
+//SW-PRODUCTION-JH-Register rw fail+]
+
+
 	ret = aw_2013_check_chipid(led_array);
 	if (ret) {
 		dev_err(&client->dev, "Check chip id error\n");

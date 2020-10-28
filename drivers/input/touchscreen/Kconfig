@@ -117,6 +117,17 @@ config TOUCHSCREEN_SMARTAMP_I2C_DRIVER
 
 	  To compile this driver as a module.
 
+config TOUCHSCREEN_SMARTAMP_I2C_DRIVER
+	tristate "Smart AMP I2C virtual driver"
+	depends on I2C
+	default y
+	help
+	  Say Y here if you need to register I2C device.
+
+	  If unsure, say N.
+
+	  To compile this driver as a module.
+
 config TOUCHSCREEN_ATMEL_MXT
 	tristate "Atmel mXT I2C Touchscreen"
 	depends on I2C

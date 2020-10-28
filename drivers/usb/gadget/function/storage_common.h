@@ -242,4 +242,8 @@ ssize_t fsg_store_perf(struct device *dev, struct device_attribute *attr,
 int fsg_get_toc(struct fsg_lun *curlun, int msf, int format, u8 *buf);
 #endif
 
+#ifdef READ_TOC_SUPPORT_MAC_OS
+int fsg_get_toc(struct fsg_lun *curlun, int msf, int format, u8 *buf);
+#endif
+
 #endif /* USB_STORAGE_COMMON_H */

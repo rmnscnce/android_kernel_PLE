@@ -76,10 +76,6 @@
 		qcom,xprt-linkid = <2>;
 		qcom,xprt-version = <1>;
 	};
-
-	pps {
-		use-system-time-ts;
-	};
 };
 
 &usb3 {

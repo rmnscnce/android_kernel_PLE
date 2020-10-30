@@ -201,9 +201,4 @@ source "drivers/cclogic/Kconfig"
 #fih driver
 source "drivers/fih/Kconfig"
 
-source "drivers/cclogic/Kconfig"
-
-#FIH drivers
-source "drivers/fih/Kconfig"
-
 endmenu

@@ -543,8 +543,7 @@ relookup_failed:
  *			MUST reply to only the first fragment.
  */
 
-void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
-		 const struct ip_options *opt)
+void icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info)
 {
 	struct iphdr *iph;
 	int room;
@@ -658,7 +657,7 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
 					  iph->tos;
 	mark = IP4_REPLY_MARK(net, skb_in->mark);
 
-	if (__ip_options_echo(&icmp_param->replyopts.opt.opt, skb_in, opt))
+	if (ip_options_echo(&icmp_param->replyopts.opt.opt, skb_in))
 		goto out_unlock;
 
 
@@ -710,7 +709,7 @@ out_free:
 	kfree(icmp_param);
 out:;
 }
-EXPORT_SYMBOL(__icmp_send);
+EXPORT_SYMBOL(icmp_send);
 
 
 static void icmp_socket_deliver(struct sk_buff *skb, u32 info)

@@ -1292,8 +1292,6 @@ void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 				"inhibit bit(s).\n", mmc_hostname(host->mmc));
 			pr_err("BBox;%s: Controller never released "
 				"inhibit bit(s).\n", mmc_hostname(host->mmc));
-			pr_err("BBox;%s: Controller never released "
-				"inhibit bit(s).\n", mmc_hostname(host->mmc));
 			sdhci_dumpregs(host);
 			cmd->error = -EIO;
 			tasklet_schedule(&host->finish_tasklet);
@@ -1532,9 +1530,6 @@ clock_set:
 		& SDHCI_CLOCK_INT_STABLE)) {
 		if (timeout == 0) {
 			pr_err("%s: Internal clock never "
-				"stabilised.\n", mmc_hostname(host->mmc));
-			printk ("BBox::UEC; 6::3\n");
-			pr_err("BBox;%s: Internal clock never "
 				"stabilised.\n", mmc_hostname(host->mmc));
 			printk ("BBox::UEC; 6::3\n");
 			pr_err("BBox;%s: Internal clock never "
@@ -2969,9 +2964,6 @@ static void sdhci_cmd_irq(struct sdhci_host *host, u32 intmask, u32 *mask)
 		pr_err("BBox;%s: Got command interrupt 0x%08x even "
 			"though no command operation was in progress.\n",
 			mmc_hostname(host->mmc), (unsigned)intmask);
-		pr_err("BBox;%s: Got command interrupt 0x%08x even "
-			"though no command operation was in progress.\n",
-			mmc_hostname(host->mmc), (unsigned)intmask);
 		sdhci_dumpregs(host);
 		return;
 	}
@@ -2988,8 +2980,6 @@ static void sdhci_cmd_irq(struct sdhci_host *host, u32 intmask, u32 *mask)
 	if (intmask & SDHCI_INT_AUTO_CMD_ERR) {
 		auto_cmd_status = host->auto_cmd_err_sts;
 		pr_err_ratelimited("%s: %s: AUTO CMD err sts 0x%08x\n",
-			mmc_hostname(host->mmc), __func__, auto_cmd_status);
-		pr_err_ratelimited("BBox;%s: %s: AUTO CMD err sts 0x%08x\n",
 			mmc_hostname(host->mmc), __func__, auto_cmd_status);
 		pr_err_ratelimited("BBox;%s: %s: AUTO CMD err sts 0x%08x\n",
 			mmc_hostname(host->mmc), __func__, auto_cmd_status);
@@ -3166,9 +3156,6 @@ static void sdhci_data_irq(struct sdhci_host *host, u32 intmask)
 		pr_err("BBox;%s: Got data interrupt 0x%08x even "
 			"though no data operation was in progress.\n",
 			mmc_hostname(host->mmc), (unsigned)intmask);
-		pr_err("BBox;%s: Got data interrupt 0x%08x even "
-			"though no data operation was in progress.\n",
-			mmc_hostname(host->mmc), (unsigned)intmask);
 		sdhci_dumpregs(host);
 
 		return;
@@ -3284,18 +3271,13 @@ static irqreturn_t sdhci_cmdq_irq(struct sdhci_host *host, u32 intmask)
 	int err = 0;
 	u32 mask = 0;
 	irqreturn_t ret;
-	bool is_cmd_err = false;
 
-	if (intmask & SDHCI_INT_CMD_MASK) {
+	if (intmask & SDHCI_INT_CMD_MASK)
 		err = sdhci_get_cmd_err(intmask);
-		is_cmd_err = true;
-	} else if (intmask & SDHCI_INT_DATA_MASK) {
+	else if (intmask & SDHCI_INT_DATA_MASK)
 		err = sdhci_get_data_err(intmask);
-		if (intmask & SDHCI_INT_DATA_TIMEOUT)
-			is_cmd_err = sdhci_card_busy(host->mmc);
-	}
 
-	ret = cmdq_irq(host->mmc, err, is_cmd_err);
+	ret = cmdq_irq(host->mmc, err);
 	if (err) {
 		/* Clear the error interrupts */
 		mask = intmask & SDHCI_INT_ERROR_MASK;
@@ -3459,8 +3441,6 @@ out:
 
 	if (unexpected) {
 		pr_err("%s: Unexpected interrupt 0x%08x.\n",
-			   mmc_hostname(host->mmc), unexpected);
-		pr_err("BBox;%s: Unexpected interrupt 0x%08x.\n",
 			   mmc_hostname(host->mmc), unexpected);
 		pr_err("BBox;%s: Unexpected interrupt 0x%08x.\n",
 			   mmc_hostname(host->mmc), unexpected);

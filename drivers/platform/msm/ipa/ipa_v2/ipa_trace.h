@@ -131,5 +131,5 @@ TRACE_EVENT(
 
 /* This part must be outside protection */
 #undef TRACE_INCLUDE_PATH
-#define TRACE_INCLUDE_PATH /home/user/devel/android_kernel_nokia_msm8937/drivers/platform/msm/ipa/ipa_v2
+#define TRACE_INCLUDE_PATH .
 #include <trace/define_trace.h>

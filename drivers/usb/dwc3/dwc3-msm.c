@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -4138,12 +4138,6 @@ static void dwc3_msm_otg_sm_work(struct work_struct *w)
 			pm_runtime_get_sync(mdwc->dev);
 			dbg_event(0xFF, "SUSP gsync",
 				atomic_read(&mdwc->dev->power.usage_count));
-		} else {
-			/*
-			 * Release PM Wakelock if PM resume had happened from
-			 * peripheral mode bus suspend case.
-			 */
-			pm_relax(mdwc->dev);
 		}
 		break;
 
@@ -4261,21 +4255,36 @@ static int dwc3_msm_pm_prepare(struct device *dev)
 	return 0;
 }
 
+#ifdef CONFIG_FIH_MT_SLEEP
+int get_sleep_current_mode(void);
+#endif
 #ifdef CONFIG_PM_SLEEP
 static int dwc3_msm_pm_suspend(struct device *dev)
 {
 	int ret = 0;
 	struct dwc3_msm *mdwc = dev_get_drvdata(dev);
 	struct dwc3 *dwc = platform_get_drvdata(mdwc->dwc3);
+#ifdef CONFIG_FIH_MT_SLEEP
+	int sc = get_sleep_current_mode();
+#endif
 
 	dev_dbg(dev, "dwc3-msm PM suspend\n");
 	dbg_event(0xFF, "PM Sus", 0);
 
 	flush_workqueue(mdwc->dwc3_resume_wq);
+#ifdef CONFIG_FIH_MT_SLEEP
+	if (!atomic_read(&dwc->in_lpm) && !mdwc->no_wakeup_src_in_hostmode && !sc) {
+#else
 	if (!atomic_read(&dwc->in_lpm) && !mdwc->no_wakeup_src_in_hostmode) {
+#endif
 		dev_err(mdwc->dev, "Abort PM suspend!! (USB is outside LPM)\n");
 		return -EBUSY;
 	}
+#ifdef CONFIG_FIH_MT_SLEEP
+	if (sc) {
+		mdwc->resume_pending = true;
+	}
+#endif
 
 	ret = dwc3_msm_suspend(mdwc);
 	if (!ret)

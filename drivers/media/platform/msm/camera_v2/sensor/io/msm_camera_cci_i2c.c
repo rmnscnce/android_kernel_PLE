@@ -24,8 +24,6 @@
 //, add BBS log
 extern void fih_bbs_camera_msg_by_addr(int, int);
 
-extern void fih_bbs_camera_msg_by_addr(int, int);
-
 int32_t msm_camera_cci_i2c_read(struct msm_camera_i2c_client *client,
 	uint32_t addr, uint16_t *data,
 	enum msm_camera_i2c_data_type data_type)

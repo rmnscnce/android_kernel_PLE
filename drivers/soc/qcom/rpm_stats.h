@@ -53,20 +53,6 @@ struct msm_rpmstats_mode_data {
 	u64 vmin_time_since_last_mode;
 	u64 vmin_actual_last_sleep;
 };
-//CORE-PK-RPMStatsLog-00+[
-#ifdef CONFIG_FIH_FEATURE_RPM_STATS_LOG
-struct msm_rpmstats_mode_data {
-	u32 xosd_count;
-	u64 xosd_time_in_last_mode;
-	u64 xosd_time_since_last_mode;
-	u64 xosd_actual_last_sleep;
-	u32 vmin_count;
-	u64 vmin_time_in_last_mode;
-	u64 vmin_time_since_last_mode;
-	u64 vmin_actual_last_sleep;
-};
-#endif
-//CORE-PK-RPMStatsLog-00+]
 #endif
 //CORE-PK-RPMStatsLog-00+]
 #endif

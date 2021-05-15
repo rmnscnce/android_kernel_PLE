@@ -1,0 +1,180 @@
+/* Copyright (c) 2013-2014, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	tlmm: pinctrl@1000000 {
+		compatible = "qcom,msm8937-pinctrl";
+		reg = <0x1000000 0x300000>;
+		interrupts = <0 208 0>;
+		gpio-controller;
+		interrupt-controller;
+
+		blsp1_spi_4 {
+			blsp1_spi4_default: blsp1_spi4_default {
+				/* active state */
+				mux {
+					/* MOSI, CS, CLK */
+					pins = "gpio12", "gpio14", "gpio15";
+					function = "blsp_spi4";
+				};
+
+				config {
+					pins = "gpio12", "gpio14", "gpio15";
+					drive-strength = <6>; /* 6 MA */
+					bias-disable; /* No PULL */
+				};
+			};
+
+			blsp1_spi4_sleep: blsp1_spi4_sleep {
+				/* suspended state */
+				mux {
+					/* MOSI, CS, CLK */
+					pins = "gpio12", "gpio14", "gpio15";
+					function = "blsp_spi4";
+				};
+
+				config {
+					pins = "gpio12", "gpio14", "gpio15";
+					drive-strength = <6>; /* 6 MA */
+					bias-disable; /* No PULL */
+				};
+			};
+
+			blsp1_spi4_miso_default: blsp1_spi4_miso_default {
+				/* MISO */
+				mux {
+					pins = "gpio13";
+					function = "blsp_spi4";
+				};
+
+				config {
+					pins = "gpio13";
+					drive-strength = <2>; /* 2 MA */
+					bias-pull-down; /* PULL Down */
+				};
+			};
+
+			blsp1_spi4_miso_sleep: blsp1_spi4_miso_sleep {
+				/* MISO */
+				mux {
+					pins = "gpio13";
+					function = "blsp_spi4";
+				};
+
+				config {
+					pins = "gpio13";
+					drive-strength = <2>; /* 2 MA */
+					bias-pull-down; /* PULL Down */
+				};
+			};
+		};
+
+		/*****************************************/
+		/*  pinctrl customize setting            */
+		/*  SensorHub                            */
+		/*****************************************/
+		shub_reset_active: shub_reset_active {
+			mux {
+				pins = "gpio39";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio39";
+				drive-strength = <2>;
+				output-high;
+				bias-disable;
+			};
+		};
+		shub_reset_suspend: shub_reset_suspend {
+			mux {
+				pins = "gpio39";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio39";
+				drive-strength = <2>;
+				output-high;
+				bias-disable;
+			};
+		};
+
+		shub_int0_active: shub_int0_active {
+			mux {
+				pins = "gpio44";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio44";
+				drive-strength = <2>;
+				bias-pull-up;
+			};
+		};
+		shub_int0_suspend: shub_int0_suspend {
+			mux {
+				pins = "gpio44";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio44";
+				drive-strength = <2>;
+				bias-pull-up;
+			};
+		};
+		shub_int0_pullup: shub_int0_pullup {
+			mux {
+				pins = "gpio44";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio44";
+				drive-strength = <2>;
+				bias-pull-up;
+			};
+		};
+		shub_int0_pulldown: shub_int0_pulldown {
+			mux {
+				pins = "gpio44";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio44";
+				drive-strength = <2>;
+				bias-pull-down;
+			};
+		};
+
+		shub_brmp_active: shub_brmp_active {
+			mux {
+				pins = "gpio96";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio96";
+				drive-strength = <2>;
+				output-high;
+				bias-disable;
+			};
+		};
+		shub_brmp_suspend: shub_brmp_suspend {
+			mux {
+				pins = "gpio96";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio96";
+				drive-strength = <2>;
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+};

@@ -1,0 +1,168 @@
+/*
+ * Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/ {
+	soc {
+		/delete-node/ qcom,msm-ssc-sensors;
+	};
+
+	aliases {
+		spi4 = &blsp1_spi4;
+	};
+};
+
+
+&soc {
+	blsp1_spi4: spi@78B8000 {
+		compatible = "qcom,spi-qup-v2";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg-names = "spi_physical", "spi_bam_physical";
+		reg = <0x78B8000 0x600>,
+			<0x7884000 0x1f000>;
+		interrupt-names = "spi_irq", "spi_bam_irq";
+		interrupts = <0 98 0>, <0 238 0>;
+		spi-max-frequency = <48000000>;
+		pinctrl-names = "spi_default", "spi_sleep";
+		pinctrl-0 = <&blsp1_spi4_default &blsp1_spi4_miso_default>;
+		pinctrl-1 = <&blsp1_spi4_sleep &blsp1_spi4_miso_sleep>;
+		clocks = <&clock_gcc clk_gcc_blsp1_ahb_clk>,
+			<&clock_gcc clk_gcc_blsp1_qup4_spi_apps_clk>;
+		clock-names = "iface_clk", "core_clk";
+		qcom,infinite-mode = <0>;
+		qcom,use-bam;
+		qcom,use-pinctrl;
+		qcom,ver-reg-exists;
+		qcom,bam-consumer-pipe-index = <10>;
+		qcom,bam-producer-pipe-index = <11>;
+		qcom,master-id = <86>;
+		status = "ok";
+
+		sensorhub@0 {
+			status = "ok";
+			compatible = "sharp,sensorhub";
+			reg = <0>;
+			spi-max-frequency = <2000000>;
+			spi-cpol;
+			spi-cpha;
+			qcom,shub-gpio-reset = <&tlmm 39 0>;
+			qcom,shub-gpio-brmp = <&tlmm 96 0>;
+			qcom,shub-gpio-int0 = <&tlmm 44 0>;
+			pinctrl-names = "shub_reset_active","shub_reset_suspend",
+							"shub_int0_active","shub_int0_suspend",
+							"shub_int0_pullup","shub_int0_pulldown",
+							"shub_brmp_active","shub_brmp_suspend";
+			pinctrl-0 = <&shub_reset_active>;
+			pinctrl-1 = <&shub_reset_suspend>;
+			pinctrl-2 = <&shub_int0_active>;
+			pinctrl-3 = <&shub_int0_suspend>;
+			pinctrl-4 = <&shub_int0_pullup>;
+			pinctrl-5 = <&shub_int0_pulldown>;
+			pinctrl-6 = <&shub_brmp_active>;
+			pinctrl-7 = <&shub_brmp_suspend>;
+			shub,shub_acc_axis_val = <0>;
+			shub,shub_gyro_axis_val = <0>;
+			shub,shub_mag_axis_val = <0>;
+		};
+	};
+	
+	sharp,shub_acc {
+		status = "ok";
+		compatible = "sharp,shub_acc";
+	};
+	
+	sharp,shub_diag {
+		status = "ok";
+		compatible = "sharp,shub_diag";
+	};
+	
+	sharp,shub_exif {
+		status = "ok";
+		compatible = "sharp,shub_exif";
+	};
+	
+	sharp,shub_game_rotation_vec {
+		status = "ok";
+		compatible = "sharp,shub_rot_gyro";
+	};
+	
+	sharp,shub_grav {
+		status = "ok";
+		compatible = "sharp,shub_grav";
+	};
+	
+	sharp,shub_gyro {
+		status = "ok";
+		compatible = "sharp,shub_gyro";
+	};
+	
+	sharp,shub_gyro_uncal {
+		status = "ok";
+		compatible = "sharp,shub_gyrounc";
+	};
+	
+	sharp,shub_linear_acc {
+		status = "ok";
+		compatible = "sharp,shub_linearacc";
+	};
+	
+	sharp,shub_mag {
+		status = "ok";
+		compatible = "sharp,shub_mag";
+	};
+	
+	sharp,shub_mag_rotation_vec {
+		status = "ok";
+		compatible = "sharp,shub_rot_mag";
+	};
+	
+	sharp,shub_mag_uncalib {
+		status = "ok";
+		compatible = "sharp,shub_mag_unc";
+	};
+	
+	sharp,shub_mcu {
+		status = "ok";
+		compatible = "sharp,shub_mcu";
+	};
+	
+	harp,shub_orientation {
+		status = "ok";
+		compatible = "sharp,shub_orien";
+	};
+	
+	sharp,shub_pedo {
+		status = "ok";
+		compatible = "sharp,shub_pedo";
+	};
+	
+	sharp,shub_pedodet {
+		status = "ok";
+		compatible = "sharp,shub_pedodet";
+	};
+	
+	sharp,shub_rotation_vec {
+		status = "ok";
+		compatible = "sharp,shub_rot";
+	};
+	
+	sharp,shub_significant {
+		status = "ok";
+		compatible = "sharp,shub_signif";
+	};
+	
+	sharp,shub_device_orientation {
+		status = "ok";
+		compatible = "sharp,shub_dev_orien";
+	};
+};

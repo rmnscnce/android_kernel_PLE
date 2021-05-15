@@ -1,0 +1,322 @@
+/*
+ * Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+//#include "msm8937-pinctrl.dtsi"
+#include "msm8937-pinctrl-OC6.dtsi"
+#include "components/camera/msm8937-camera-sensor-OC6_v0.dtsi"
+
+/*IRDA*/
+#include "components/irda/sharp-pinctrl-irda.dtsi"
+#include "components/irda/sharp-8937-irda-OC6_v0.dtsi"
+
+/*LED*/
+#include "components/fih/msm8937-pmi8950-led-OC6-gpio1.dtsi"
+
+/* Reserved memory hole */
+#include "components/memmap/memmap_8937_v0.dtsi"
+
+/* Pstore:last kmsg */
+#include "components/memmap/msm8937-memory-pstore.dtsi"
+
+/* sensorhub */
+#include "components/shub/msm8937-shub-OC6_v0.dtsi"
+
+/* DTV */
+#include "components/dtv/msm8937-dtv-pinctrl-OC6.dtsi"
+#include "components/dtv/msm8937-dtv-OC6_v0.dtsi"
+
+/ {
+	aliases {
+		i2c8 = &i2c_8;
+	};
+};
+
+/* Disable Vendor partition */
+&firmware {
+  android {
+    fstab {
+      vendor {
+        status = "disabled";
+      };
+      system {
+        fsmgr_flags = "wait,verify";
+        status = "ok";
+      };
+    };
+  };
+};
+
+&flash_led {
+	compatible = "qcom,qpnp-flash-led";
+	reg = <0xd300 0x100>;
+	pinctrl-names = "flash_led_enable","flash_led_disable";
+	pinctrl-0 = <&rear_flash_led_enable>;
+	pinctrl-1 = <&rear_flash_led_disable>;
+	qcom,follow-otst2-rb-disabled;
+};
+
+&wled {
+	qcom,cons-sync-write-delay-us = <1000>;
+	qcom,fs-curr-ua = <20000>;
+};
+
+&soc {
+
+  /include/ "components/fih/common_info_msm8976_v1.dtsi"
+
+  /* FihtdcCode@AlanHZChang, Add for hall sensor */
+  /include/ "components/hallsensor/hallsensor_v1.dtsi"
+
+  /*Win Add for FPC fingerprint */
+  /include/ "components/fingerprint/fingerprint_fpc_v0.dtsi"
+
+	i2c_8: i2c@7af8000 {
+		compatible = "qcom,i2c-msm-v2";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg-names = "qup_phys_addr";
+		reg = <0x7AF8000 0x600>;
+		interrupt-names = "qup_irq";
+		interrupts = <0 302 0>;
+		qcom,clk-freq-out = <400000>;   /* T.B.D */
+		qcom,clk-freq-in  = <19200000>;
+		clock-names = "iface_clk", "core_clk";
+		clocks = <&clock_gcc clk_gcc_blsp2_ahb_clk>,
+			<&clock_gcc clk_gcc_blsp2_qup4_i2c_apps_clk>;
+		pinctrl-names = "i2c_active", "i2c_sleep";
+		pinctrl-0 = <&i2c_8_active>;
+		pinctrl-1 = <&i2c_8_active>;
+		qcom,noise-rjct-scl = <0>;
+		qcom,noise-rjct-sda = <0>;
+		qcom,master-id = <84>;
+		dmas = <&dma_blsp2 10 64 0x20000020 0x20>,
+			<&dma_blsp2 11 32 0x20000020 0x20>;
+		dma-names = "tx", "rx";
+		status = "ok";
+		#include "components/sensors/msm8937-fih-proxlight-OC6.dtsi"
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+		input-name = "gpio-keys";
+		pinctrl-names = "tlmm_gpio_key_active","tlmm_gpio_key_suspend";
+		pinctrl-0 = <&gpio_key_active>;
+		pinctrl-1 = <&gpio_key_suspend>;
+
+		vol_dn {
+			label = "volume_dn";
+			gpios = <&tlmm 91 0x1>;
+			linux,input-type = <1>;
+			linux,code = <114>;
+			debounce-interval = <15>;
+		};
+
+                google_serch {
+                       label = "google_key";
+                       gpios = <&tlmm 127 0x1>;
+                       linux,input-type = <1>;
+                       linux,code = <196>;
+                       gpio-key,wakeup;
+                       debounce-interval = <15>;
+                };
+                mail_key {
+                        label = "mail_key";
+                        gpios = <&tlmm 130 0x1>;
+                        linux,input-type = <1>;
+                        linux,code = <155>;
+                        gpio-key,wakeup;
+                        debounce-interval = <15>;
+               };
+                phone_key {
+                        label = "phone_key";
+                        gpios = <&tlmm 93 0x1>;
+                        linux,input-type = <1>;
+                        linux,code = <231>;
+                        gpio-key,wakeup;
+                        debounce-interval = <15>;
+                };
+                buzzer_key {
+                        label = "buzzer_key";
+                        gpios = <&tlmm 124 0x1>;
+                        linux,input-type = <1>;
+                        linux,code = <199>;
+                        gpio-key,wakeup;
+                        debounce-interval = <15>;
+                };
+                home_key {
+                        label = "home_key";
+                        gpios = <&tlmm 128 0x1>;
+                        linux,input-type = <1>;
+                        linux,code = <102>;
+                        gpio-key,wakeup;
+                        debounce-interval = <15>;
+                };
+
+
+
+
+	};
+	i2c@78b6000 {
+	  status = "ok";
+	  #include "components/usb_cclogic/tusb320.dtsi"
+	};
+
+	i2c@78b7000 {
+	  status = "ok";
+	  #include "components/touch/touch_shtps_fts.dtsi"
+	};
+};
+
+&blsp1_uart2 {
+	status = "ok";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart_console_active>;
+};
+
+
+
+&sdhc_1 {
+	/* device core power supply */
+	vdd-supply = <&pm8937_l8>;
+	qcom,vdd-voltage-level = <2900000 2900000>;
+	qcom,vdd-current-level = <200 570000>;
+
+	/* device communication power supply */
+	vdd-io-supply = <&pm8937_l5>;
+	qcom,vdd-io-always-on;
+	qcom,vdd-io-lpm-sup;
+	qcom,vdd-io-voltage-level = <1800000 1800000>;
+	qcom,vdd-io-current-level = <200 325000>;
+
+	pinctrl-names = "active", "sleep";
+	pinctrl-0 = <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on &sdc1_rclk_on>;
+	pinctrl-1 = <&sdc1_clk_off &sdc1_cmd_off &sdc1_data_off &sdc1_rclk_off>;
+
+	qcom,clk-rates = <400000 20000000 25000000 50000000 100000000 192000000
+								384000000>;
+	qcom,nonremovable;
+	qcom,bus-speed-mode = "HS400_1p8v", "HS200_1p8v", "DDR_1p8v";
+
+	status = "ok";
+};
+
+&sdhc_2 {
+	/* device core power supply */
+	vdd-supply = <&pm8937_l11>;
+	qcom,vdd-voltage-level = <2950000 2950000>;
+	qcom,vdd-current-level = <15000 800000>;
+
+	/* device communication power supply */
+	vdd-io-supply = <&pm8937_l12>;
+	qcom,vdd-io-voltage-level = <1800000 2950000>;
+	qcom,vdd-io-current-level = <200 22000>;
+
+	pinctrl-names = "active", "sleep";
+	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
+	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off>;
+
+	#address-cells = <0>;
+	interrupt-parent = <&sdhc_2>;
+	interrupts = <0 1 2>;
+	#interrupt-cells = <1>;
+	interrupt-map-mask = <0xffffffff>;
+	interrupt-map = <0 &intc 0 125 0
+		1 &intc 0 221 0
+		2 &tlmm 67 0>;
+	interrupt-names = "hc_irq", "pwr_irq", "status_irq";
+	cd-gpios = <&tlmm 67 0x0>;
+
+	qcom,clk-rates = <400000 20000000 25000000 50000000 100000000
+								200000000>;
+	qcom,bus-speed-mode = "SDR12", "SDR25", "SDR50", "DDR50", "SDR104";
+
+	status = "ok";
+};
+
+&pm8937_gpios {
+	gpio@c400 {
+		qcom,mode = <0>;
+		qcom,output-type = <0>;
+		qcom,pull = <0>;
+		qcom,vin-sel = <2>;
+		qcom,out-strength = <3>;
+		qcom,src-sel = <0>;
+		qcom,master-en = <1>;
+		status = "okay";
+	};
+	gpio@c600 {
+		status = "okay";
+		qcom,mode = <1>;
+		qcom,output-type = <0>;
+		qcom,pull = <5>;
+		qcom,vin-sel = <0>;
+		qcom,out-strength = <1>;
+		qcom,src-sel = <2>; /* Special Function 1 */
+		qcom,master-en = <1>;
+	};
+};
+&pm8937_1 {
+	pm8937_pwm_2: pwm@c600 {
+		compatible = "qcom,qpnp-pwm";
+		reg = <0xc600 0x100>,<0xb042 0x7e>;
+		qcom,channel-id = <2>;
+		reg-names = "qpnp-lpg-channel-base","qpnp-lpg-lut-base";
+		qcom,ramp-index = <1>;
+		qcom,supported-sizes = <6>, <9>;
+		qcom,force-pwm-size = <9>;
+		qcom,mode-select = <0>; /* PWM */
+		#pwm-cells = <2>;
+		status = "okay";
+	};
+};
+#include "msm8937-mdss-panels.dtsi"
+
+&mdss_mdp {
+	qcom,mdss-pref-prim-intf = "dsi";
+};
+
+&mdss_dsi {
+	hw-config = "single_dsi";
+};
+
+&mdss_dsi0 {
+	qcom,dsi-pref-prim-pan = <&dsi_sharp_ft8607_720p_video>;
+	pinctrl-names = "mdss_default", "mdss_sleep";
+	pinctrl-0 = <&mdss_dsi_active &mdss_te_active>;
+	pinctrl-1 = <&mdss_dsi_suspend &mdss_te_suspend>;
+
+	qcom,platform-te-gpio = <&tlmm 24 0>;
+/*	qcom,platform-enable-gpio = <&tlmm 99 0>;*/
+	qcom,platform-reset-gpio = <&tlmm 60 0>;
+/*	qcom,platform-bklight-en-gpio = <&tlmm 98 0>;*/
+	fih,platform-tp-reset-gpio = <&tlmm 64 0>;
+	lcm-vddio-supply = <&pm8937_l10>;
+};
+
+&mdss_dsi1 {
+	status = "disabled";
+};
+
+&dsi_sharp_ft8607_720p_video {
+	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
+};
+
+/* PM8937 GPIO configuration */
+&pm8937_gpios {
+	gpio@c100 {
+		qcom,mode = <0>;
+		qcom,vin-sel = <3>;
+		status = "okay";
+	};
+};
+

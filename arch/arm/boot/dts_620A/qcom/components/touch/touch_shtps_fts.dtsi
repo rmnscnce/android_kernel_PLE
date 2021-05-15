@@ -1,0 +1,11 @@
+		shtps_fts@38 {
+			status = "ok";
+			compatible = "sharp,shtps_fts";
+			reg = <0x38>;
+			interrupt-parent = <&tlmm>;
+			interrupts = <65 0>;
+
+			/* user defined property */
+			shtps_fts,rst_pin = <&tlmm 64 0>;
+			shtps_fts,vddh-supply = <&pm8937_l10>;
+		};

@@ -1,0 +1,6 @@
+tusb320@47 {
+	compatible = "huawei,tusb320";
+	reg = <0x47>;
+	tusb320_typec,gpio_enb = <&tlmm 131 0>;
+	tusb320_typec,gpio_intb = <&tlmm 97 0>;
+};

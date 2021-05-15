@@ -1,0 +1,21 @@
+&spmi_bus {
+	qcom,pmi8950@3 {
+	 	 pmi_haptic: qcom,haptic@c000 {
+			qcom,vmax-mv = <2600>;
+			qcom,wave-shape = "sine";
+			qcom,actuator-type = "lra";
+			qcom,wave-play-rate-us = <4850>;
+			qcom,int-pwm-freq-khz = <505>;
+			qcom,brake-pattern = [02 01 00 00];
+			qcom,time-required-to-generate-back-emf-us = <20000>;
+			qcom,lra-res-cal-period = <16>; 
+			qcom,lra-calibrate-at-eop = <1>;
+			qcom,perform-lra-auto-resonance-search;
+			qcom,lra-auto-mode;
+			qcom,wave-samples = [3e 3e 3e 3e 3e 3e 3e 3e];
+			qcom,wave-rep-cnt = <1>;
+			qcom,wave-samp-rep-cnt = <1>;
+			qcom,lra-auto-res-mode = "qwd"; 
+		};
+	};
+};

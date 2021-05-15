@@ -1,0 +1,20 @@
+		ltr557@53 {
+			compatible = "sharp,ltr557";
+			status = "ok";
+			reg = <0x53>;
+			qcom,irq-gpio  = <&tlmm 43 0x2002>;
+			interrupt-parent  = <&tlmm>;
+			interrupts = <43 0>;
+			pinctrl-names = "prox_int_active","prox_int_suspend";
+			pinctrl-0 = <&prox_int_active>;
+			pinctrl-1 = <&prox_int_suspend>;
+			
+			qcom,als-ps-persist = <0>;
+			qcom,ps-led = <0x7f>;
+			qcom,ps-pulses = <4>;
+			qcom,als-resolution = <2>;
+			qcom,wakeup-threshold = <0xff>;
+			qcom,ps-distance-table = <790 337 195 114 78 62 50>;
+			qcom,als-gain = <2>;
+			
+		};

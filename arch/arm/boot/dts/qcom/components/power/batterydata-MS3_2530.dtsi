@@ -1,0 +1,76 @@
+/* Copyright (c) 2014-2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+qcom,fih-ms3-4v4-2530mah-10k {
+	qcom,nom-batt-capacity-mah = <2530>;
+	qcom,max-voltage-uv = <4350000>;
+	qcom,v-cutoff-uv = <3400000>;
+	qcom,chg-term-ua = <50000>;
+	qcom,batt-id-kohm = <10>;
+	qcom,battery-beta = <3435>;
+	qcom,battery-type = "MSM8937_MS3_10";
+	qcom,cool-bat-decidegc = <150>;
+	qcom,hot-bat-decidegc = <550>;
+	qcom,fg-chg-iterm-ma = <100>;
+	qcom,chg-rslow-comp-c1 = <4078589>;
+	qcom,chg-rslow-comp-c2 = <6908893>;
+	qcom,chg-rs-to-rslow = <1149980>;
+	qcom,chg-rslow-comp-thr = <0xB4>;
+	qcom,fastchg-current-ma = <1600>;
+	qcom,fastchg-current-comp = <700>;
+
+	qcom,high-float-voltage-comp = <13>; /* 4.1V */
+	qcom,low-float-voltage-comp = <0>; /* 4.35V */
+	qcom,high-fastchg-current-comp = <700>;
+	qcom,low-fastchg-current-comp = <700>;
+
+	qcom,fg-cc-cv-threshold-mv = <4340>;
+	qcom,checksum = <0xD8E1>;
+	qcom,thermal-coefficients = [C5 86 BE 50 D1 37];
+	qcom,gui-version = "PMI8950GUI - 2.0.0.16";
+	fih,log-info = <1>;
+	fih,turn-on-QC-log = <1>;
+	qcom,fg-profile-data = [
+		 02 88 EA 7D 
+		 A8 81 27 7C 
+		 5C 83 AD 6C 
+		 D5 82 D7 8C 
+		 15 82 8C 98 
+		 58 B5 27 C0 
+		 63 14 0D 88 
+		 16 7E A6 81 
+		 16 7C 5A 83 
+		 01 53 21 81 
+		 6E 8C 0F 82 
+		 A1 9A 35 BE 
+		 43 D0 62 0E 
+		 B9 09 61 5B 
+		 CE 6E 71 FD 
+		 52 40 DF 47 
+		 CE 34 00 00 
+		 E5 45 E6 30 
+		 96 3C 00 00 
+		 00 00 00 00 
+		 00 00 00 00 
+		 9A 72 17 70 
+		 B2 85 3E 81 
+		 1A 7E ED 73 
+		 62 76 FA 6B 
+		 C9 76 EB 6A 
+		 71 5C DB A0 
+		 3B AC 60 FB 
+		 5D A0 71 0C 
+		 28 00 FF 36 
+		 F0 11 30 03 
+		 00 00 00 0C 
+	];
+};

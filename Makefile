@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 18
 SUBLEVEL = 132
-EXTRAVERSION = -plus+rebase_dev.1
+EXTRAVERSION = -plus+rebase_dev.2
 NAME = Diseased Newt
 
 # *DOCUMENTATION*
